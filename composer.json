@@ -1,0 +1,62 @@
+{
+    "name": "ondram/simple-google-reader",
+    "description": "Super simple Google Spreadsheets reader",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ondřej Machulda",
+            "email": "ondrej.machulda@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.20",
+        "php-parallel-lint/php-parallel-lint": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.6",
+        "symfony/cache": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "OndraM\\SimpleGoogleReader\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OndraM\\SimpleGoogleReader\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        },
+        "platform": {
+            "php": "7.3.31"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "all": [
+            "@lint",
+            "@analyze",
+            "@test"
+        ],
+        "analyze": [
+            "vendor/bin/phpstan analyze -c phpstan.neon --ansi"
+        ],
+        "fix": [
+            "@composer normalize"
+        ],
+        "lint": [
+            "vendor/bin/parallel-lint -j 10 -e php ./src ./tests",
+            "@composer validate",
+            "@composer normalize --dry-run"
+        ],
+        "test": [
+            "vendor/bin/phpunit --colors=always"
+        ]
+    }
+}
