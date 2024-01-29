@@ -24,6 +24,9 @@ class Reader
         $this->cache = $cache;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function readById(string $spreadsheetId, string $sheetName = null): array
     {
         $cacheKey = $this->generateCacheKey($spreadsheetId, $sheetName);
