@@ -10,18 +10,9 @@ use Psr\SimpleCache\CacheInterface;
 class Reader
 {
     private const DEFAULT_TTL = 3600;
-    /** @var Client */
-    protected $googleClient;
-    /** @var Slugify */
-    private $slugify;
-    /** @var CacheInterface */
-    private $cache;
 
-    public function __construct(Client $googleClient, Slugify $slugify, CacheInterface $cache)
+    public function __construct(protected Client $googleClient, private Slugify $slugify, private CacheInterface $cache)
     {
-        $this->googleClient = $googleClient;
-        $this->slugify = $slugify;
-        $this->cache = $cache;
     }
 
     /**
@@ -47,9 +38,7 @@ class Reader
         }
 
         $header = array_map(
-            function ($value) {
-                return $this->slugify->slugify($value, ['separator' => '_']);
-            },
+            fn ($value) => $this->slugify->slugify($value, ['separator' => '_']),
             array_shift($rows)
         );
 
