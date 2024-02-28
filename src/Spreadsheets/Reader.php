@@ -18,7 +18,7 @@ class Reader
     /**
      * @return array<string, mixed>
      */
-    public function readById(string $spreadsheetId, string $sheetName = null): array
+    public function readById(string $spreadsheetId, string $sheetName = null, int $ttl = self::DEFAULT_TTL): array
     {
         $cacheKey = $this->generateCacheKey($spreadsheetId, $sheetName);
         if ($this->cache->has($cacheKey)) {
@@ -54,7 +54,7 @@ class Reader
             $rows
         );
 
-        $this->cache->set($cacheKey, $data, self::DEFAULT_TTL);
+        $this->cache->set($cacheKey, $data, $ttl);
 
         return $data;
     }
