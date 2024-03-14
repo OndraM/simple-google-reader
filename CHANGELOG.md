@@ -3,6 +3,8 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.0.0 - 2024-03-14
 - **[BC break]** Rename `Reader` to `SpreadsheetsReader`.
 - Feat: Add Google Docs Reader, with ability to read documents either as plaintext or as HTML.
 - Feat: Skip empty rows when reading spreadsheets.
