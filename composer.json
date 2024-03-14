@@ -17,11 +17,13 @@
         "psr/simple-cache-implementation": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
+        "cache/array-adapter": "^1.2",
         "cache/filesystem-adapter": "^1.1",
         "ergebnis/composer-normalize": "^2.20",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.5",
+        "symfony/var-dumper": "^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -52,7 +54,7 @@
             "@composer normalize"
         ],
         "lint": [
-            "vendor/bin/parallel-lint -j 10 -e php ./src",
+            "vendor/bin/parallel-lint -j 10 -e php ./src ./tests",
             "@composer validate",
             "@composer normalize --dry-run"
         ],

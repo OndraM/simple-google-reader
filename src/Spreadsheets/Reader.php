@@ -33,7 +33,7 @@ class Reader
 
         $response = $sheetService->spreadsheets_values->get($spreadsheetId, $range);
         $rows = $response->getValues();
-        if (count($rows) === 0) {
+        if (!is_array($rows) || count($rows) === 0) {
             return [];
         }
 
@@ -42,16 +42,18 @@ class Reader
             array_shift($rows)
         );
 
+        // Map rows to associative arrays based on header
         $data = array_map(
             function ($value) use ($header) {
-                $mappedData = [];
-                for ($i = 0, $iCount = count($header); $i < $iCount; $i++) {
-                    $mappedData[$header[$i]] = $value[$i] ?? null;
-                }
-
-                return $mappedData;
+                return array_combine($header, array_pad($value, count($header), null));
             },
             $rows
+        );
+
+        // Filter out rows where all values are null
+        $data = array_filter(
+            $data,
+            fn($row) => count(array_filter($row, fn($value) => $value !== null)) > 0
         );
 
         $this->cache->set($cacheKey, $data, $ttl);
