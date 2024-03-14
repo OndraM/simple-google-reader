@@ -42,6 +42,7 @@ class Reader
             array_shift($rows)
         );
 
+        // Map rows to associative arrays based on header
         $data = array_map(
             function ($value) use ($header) {
                 $mappedData = [];
