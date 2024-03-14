@@ -125,6 +125,10 @@ $client->addScope(\Google\Service\Docs::DRIVE_READONLY);
 $html = $docsReader->readAsHtml('pasteHereGoogleDocsId'/*, optional cache TTL*/);
 ```
 
+Note the output will be quite bloated-HTML, with many inline styles and nested elements. It may be useful to apply
+on the output some HTML sanitizer like [symfony/html-sanitizer](https://symfony.com/doc/current/html_sanitizer.html)
+to remove unwanted elements and attributes.
+
 ## Testing
 
 Tests in this library are mainly integration, meaning they require real Google API access.
