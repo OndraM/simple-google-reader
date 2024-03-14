@@ -61,7 +61,7 @@ class Reader
         return $data;
     }
 
-    public function generateCacheKey(string $spreadsheetId, string $sheetName = null): string
+    private function generateCacheKey(string $spreadsheetId, string $sheetName = null): string
     {
         return 'spreadsheet_'
             . sha1(

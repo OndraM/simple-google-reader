@@ -1,8 +1,17 @@
 {
     "name": "ondram/simple-google-reader",
-    "description": "Super simple Google Spreadsheets reader",
+    "description": "Super simple Google Spreadsheets and Google Docs reader",
     "license": "MIT",
     "type": "library",
+    "keywords": [
+        "google",
+        "google-api",
+        "spreadsheets",
+        "google-spreadsheets",
+        "docs",
+        "google-docs",
+        "google-drive"
+    ],
     "authors": [
         {
             "name": "Ondřej Machulda",
@@ -23,6 +32,8 @@
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.5",
+        "symfony/css-selector": "^6.0 || ^7.0",
+        "symfony/dom-crawler": "^6.0 || ^7.0",
         "symfony/var-dumper": "^6.0 || ^7.0"
     },
     "autoload": {
