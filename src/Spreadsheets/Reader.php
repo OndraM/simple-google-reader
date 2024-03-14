@@ -33,7 +33,7 @@ class Reader
 
         $response = $sheetService->spreadsheets_values->get($spreadsheetId, $range);
         $rows = $response->getValues();
-        if (count($rows) === 0) {
+        if (!is_array($rows) || count($rows) === 0) {
             return [];
         }
 

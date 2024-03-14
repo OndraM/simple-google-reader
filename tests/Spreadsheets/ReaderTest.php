@@ -67,4 +67,13 @@ class ReaderTest extends TestCase
             $data
         );
     }
+
+    #[Test]
+    public function shouldReadEmptyTable(): void
+    {
+        $reader = new Reader($this->googleClient, $this->slugify, $this->cache);
+        $data = $reader->readById(self::SPREADSHEET_ID, 'Empty table');
+
+        $this->assertSame([], $data);
+    }
 }
