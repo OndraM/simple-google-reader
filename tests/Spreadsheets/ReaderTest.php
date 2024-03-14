@@ -49,9 +49,14 @@ class ReaderTest extends TestCase
                     'treti_sloupec_with_special_chars_in_its_name' => 'C 3 data',
                 ],
                 4 => [ // the number is 4, because rows 2 and 3 in the source table are empty and thus not included in the result
-                       'column_a' => '3',
+                       'column_a' => '3 after two empty rows',
                        'column_b' => 'B 4 data',
                        'treti_sloupec_with_special_chars_in_its_name' => 'C 4 data',
+                ],
+                5 => [
+                       'column_a' => '4 with empty cols',
+                       'column_b' => null,
+                       'treti_sloupec_with_special_chars_in_its_name' => null,
                 ],
             ],
             $data,
