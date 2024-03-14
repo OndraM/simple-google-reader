@@ -7,7 +7,7 @@ use Google\Client;
 use Google\Service\Sheets;
 use Psr\SimpleCache\CacheInterface;
 
-class Reader
+class SpreadsheetsReader
 {
     private const DEFAULT_TTL = 3600;
 

@@ -9,7 +9,7 @@ use Google\Service\Sheets;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class ReaderTest extends TestCase
+class SpreadsheetsReaderTest extends TestCase
 {
     // @see https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit
     private const SPREADSHEET_ID = '1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8';
@@ -32,7 +32,7 @@ class ReaderTest extends TestCase
     #[Test]
     public function shouldReadTable(): void
     {
-        $reader = new Reader($this->googleClient, $this->slugify, $this->cache);
+        $reader = new SpreadsheetsReader($this->googleClient, $this->slugify, $this->cache);
 
         $data = $reader->readById(self::SPREADSHEET_ID);
 
@@ -66,7 +66,7 @@ class ReaderTest extends TestCase
     #[Test]
     public function shouldReadSpecifiedSheet(): void
     {
-        $reader = new Reader($this->googleClient, $this->slugify, $this->cache);
+        $reader = new SpreadsheetsReader($this->googleClient, $this->slugify, $this->cache);
         $data = $reader->readById(self::SPREADSHEET_ID, 'Second sheet');
 
         $this->assertSame(
@@ -81,7 +81,7 @@ class ReaderTest extends TestCase
     #[Test]
     public function shouldReadEmptyTable(): void
     {
-        $reader = new Reader($this->googleClient, $this->slugify, $this->cache);
+        $reader = new SpreadsheetsReader($this->googleClient, $this->slugify, $this->cache);
         $data = $reader->readById(self::SPREADSHEET_ID, 'Empty table');
 
         $this->assertSame([], $data);

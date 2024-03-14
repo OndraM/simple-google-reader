@@ -3,6 +3,7 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+- **[BC break]** Rename `Reader` to `SpreadsheetsReader`.
 - Feat: Add Google Docs Reader, with ability to read documents either as plaintext or as HTML.
 - Feat: Skip empty rows when reading spreadsheets.
 - Feat: Add integration tests and run them on GitHub Actions.

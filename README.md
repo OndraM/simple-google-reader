@@ -27,6 +27,7 @@ $ composer require ondram/simple-google-reader
 1. Share the intended document with your service account, copy document ID (from the URL)
 1. Make sure to install any package [implementing PSR-6 caching](https://packagist.org/providers/psr/simple-cache-implementation)
 1. Prepare cache and initialize Google Client:
+
 ```php
 <?php declare(strict_types=1);
 
@@ -34,7 +35,7 @@ use Cache\Adapter\Filesystem\FilesystemCachePool;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use OndraM\SimpleGoogleReader\Spreadsheets\Reader;
+use OndraM\SimpleGoogleReader\Spreadsheets\SpreadsheetsReader;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -63,7 +64,7 @@ $client->addScope(\Google\Service\Sheets::SPREADSHEETS);
 // Create instance of Slugify, needed for spreadsheets
 $slugify = new Slugify(['rulesets' => ['default', 'czech']]);
 
-$reader = new Reader($client, $slugify, $cache);
+$reader = new SpreadsheetsReader($client, $slugify, $cache);
 
 $rows = $reader->readById('pasteHereGoogleSpreadsheedId', '[optional sheet name]'/*, optional cache TTL*/);
 foreach ($rows as $row) {
