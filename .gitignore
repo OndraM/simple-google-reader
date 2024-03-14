@@ -2,3 +2,5 @@ composer.lock
 vendor
 .phpunit.result.cache
 tests/google_client.json
+clover.xml
+coveralls-upload.json

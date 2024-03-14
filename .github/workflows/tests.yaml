@@ -1,0 +1,74 @@
+name: Tests and linting
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 3 * * *'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+        dependencies: ['']
+        include:
+          - { php-version: '8.1', dependencies: '--prefer-lowest' }
+
+    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        env:
+          XDEBUG_MODE: coverage
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer update --no-interaction ${{ matrix.dependencies }}
+
+      - name: Store Google client secret
+        env:
+          GOOGLE_CLIENT: ${{ secrets.GOOGLE_CLIENT }}
+        run: echo $GOOGLE_CLIENT >tests/google_client.json
+
+      - name: Run tests
+        run: vendor/bin/phpunit --colors=always --coverage-clover ./clover.xml
+
+      - name: Submit coverage to Coveralls
+        if: github.event_name != 'pull_request'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NO_COLOR: 'true'
+        run: |
+          composer global require php-coveralls/php-coveralls
+          ~/.composer/vendor/bin/php-coveralls --coverage_clover=./clover.xml -v
+
+  codestyle:
+      name: "Code style and static analysis"
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.3'
+            extensions: mbstring, intl
+
+        - name: Install dependencies
+          run: composer update --no-interaction
+
+        - name: Lint
+          run: composer lint
+
+        - name: Run checks
+          run: composer analyze

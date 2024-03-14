@@ -54,7 +54,7 @@
             "@composer normalize"
         ],
         "lint": [
-            "vendor/bin/parallel-lint -j 10 -e php ./src",
+            "vendor/bin/parallel-lint -j 10 -e php ./src ./tests",
             "@composer validate",
             "@composer normalize --dry-run"
         ],

@@ -79,5 +79,16 @@ This will be read as:
 
 Empty rows are skipped. There is currently (intentional) limitation to read columns A:Z only.
 
+## Testing
+
+Tests in this library are mainly integration, meaning they require real Google Sheets API access.
+To run them, you must download and store JSON credentials for you service account to `tests/google_client.json` file.
+
+The tests then use [this table](https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit) to read example data.
+
+```sh
+$ composer test
+```
+
 ## Changelog
 For latest changes see [CHANGELOG.md](CHANGELOG.md) file. This project follows [Semantic Versioning](https://semver.org/).
