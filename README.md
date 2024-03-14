@@ -1,6 +1,6 @@
-# Simple Google Spreadsheets Reader
+# Simple Google Spreadsheets and Docs Reader
 
-PHP library providing a simple way to load data from Google Spreadsheets.
+PHP library providing a simple way to load data from Google Spreadsheets and Google Docs.
 
 The aim is to provide universal low-level access to the data, without any additional features like data manipulation
 or formatting. It means you can implement any domain object mapping or data processing in your application.
@@ -20,10 +20,10 @@ $ composer require ondram/simple-google-reader
 
 1. [Obtain service account credentials](https://github.com/googleapis/google-api-php-client#authentication-with-service-accounts) for your project
 1. In service account details in IAM admin console open Keys settings and add JSON keys. Download generated JSON file with credentials (save for example as `google_client.json`).
-1. Enable [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) in Google Cloud Console for your project
+1. Enable [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) and/or [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com) in Google Cloud Console for your project
 1. Share the intended document with your service account, copy document ID (from the URL)
 1. Make sure to install any package [implementing PSR-6 caching](https://packagist.org/providers/psr/simple-cache-implementation)
-1. Example usage in pure PHP:
+1. Prepare cache and initialize Google Client:
 ```php
 <?php declare(strict_types=1);
 
@@ -35,9 +35,6 @@ use OndraM\SimpleGoogleReader\Spreadsheets\Reader;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Create instance of Slugify
-$slugify = new Slugify(['rulesets' => ['default', 'czech']]);
-
 // Create instance of Cache, in this case we use FilesystemCache
 $cache = new FilesystemCachePool(new Filesystem(new Local(__DIR__ . '/data')));
 
@@ -47,18 +44,28 @@ $client->setAuthConfig(__DIR__ . '/data/google_client.json');
 // If you service account has domain-wide access, you need to use setSubject to set the name of the user
 // which will the service account impersonate. This user must have right to access the spreadsheet.
 $client->setSubject('foo@bar.cz');
+
+// see below for spreadsheets and docs usage
+```
+
+### Reading spreadsheets
+
+```php
+// $client is the instance from above example
+
 $client->addScope(\Google\Service\Sheets::SPREADSHEETS);
+
+// Create instance of Slugify, needed for spreadsheets
+$slugify = new Slugify(['rulesets' => ['default', 'czech']]);
 
 $reader = new Reader($client, $slugify, $cache);
 
 $rows = $reader->readById('pasteHereGoogleSpreadsheedId', '[optional sheet name]'/*, optional cache TTL*/);
 foreach ($rows as $row) {
-    echo $row['column_name'];
-    echo $row['another_column'];
+    echo $row['first_column'];
+    echo $row['second_column'];
 }
 ```
-
-## Reading spreadsheets
 
 For spreadsheets, it is required that the first row contains column names. The library will use these names (converted to slugs)
 as keys in the associative array. Consider table:
@@ -79,12 +86,28 @@ This will be read as:
 
 Empty rows are skipped. There is currently (intentional) limitation to read columns A:Z only.
 
+### Reading documents
+
+```php
+// $client is the instance from above example
+
+$client->addScope(\Google\Service\Docs::DOCUMENTS_READONLY);
+
+$reader = new DocsReader($client, $cache);
+$document = $reader->readAsPlaintext('pasteHereGoogleSpreadsheedId'/*, optional cache TTL*/);
+```
+
+This will read the whole document as plain text. Only text elements are included, other elements like tables are
+ignored. Also, any document formatting is ignored.
+
 ## Testing
 
 Tests in this library are mainly integration, meaning they require real Google Sheets API access.
 To run them, you must download and store JSON credentials for you service account to `tests/google_client.json` file.
 
-The tests then use [this table](https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit) to read example data.
+The tests then use [this table](https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit)
+and [this document](https://docs.google.com/document/d/1T46U8sJEimVDhtmixxKLtf7Oxl1FzM2ae2EDYQ-HT_4/edit)
+to read example data.
 
 ```sh
 $ composer test

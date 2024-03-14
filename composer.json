@@ -1,8 +1,17 @@
 {
     "name": "ondram/simple-google-reader",
-    "description": "Super simple Google Spreadsheets reader",
+    "description": "Super simple Google Spreadsheets and Google Docs reader",
     "license": "MIT",
     "type": "library",
+    "keywords": [
+        "google",
+        "google-api",
+        "spreadsheets",
+        "google-spreadsheets",
+        "docs",
+        "google-docs",
+        "google-drive"
+    ],
     "authors": [
         {
             "name": "Ondřej Machulda",
