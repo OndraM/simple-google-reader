@@ -1,5 +1,9 @@
 # Simple Google Spreadsheets and Docs Reader
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/ondram/simple-google-reader.svg?style=flat-square)](https://packagist.org/packages/ondram/simple-google-reader)
+[![Coverage Status](https://img.shields.io/coveralls/OndraM/simple-google-reader/main.svg?style=flat-square)](https://coveralls.io/r/OndraM/simple-google-reader)
+[![GitHub Actions Build Status](https://img.shields.io/github/actions/workflow/status/OndraM/simple-google-reader/tests.yaml?style=flat-square&label=GitHub%20Actions%20build)](https://github.com/OndraM/simple-google-reader/actions)
+
 PHP library providing a simple way to load data from Google Spreadsheets and Google Docs.
 
 The aim is to provide universal low-level access to the data, without any additional features like data manipulation
