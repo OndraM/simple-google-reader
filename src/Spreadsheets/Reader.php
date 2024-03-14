@@ -55,6 +55,12 @@ class Reader
             $rows
         );
 
+        // Filter out rows where all values are null
+        $data = array_filter(
+            $data,
+            fn($row) => count(array_filter($row, fn($value) => $value !== null)) > 0
+        );
+
         $this->cache->set($cacheKey, $data, $ttl);
 
         return $data;
