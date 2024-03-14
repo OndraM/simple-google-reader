@@ -4,6 +4,7 @@ namespace OndraM\SimpleGoogleReader\Docs;
 
 use Google\Client;
 use Google\Service\Docs;
+use Google\Service\Drive;
 use Psr\SimpleCache\CacheInterface;
 
 class DocsReader
@@ -23,7 +24,7 @@ class DocsReader
      */
     public function readAsPlaintext(string $documentId, int $ttl = self::DEFAULT_TTL): string
     {
-        $cacheKey = $this->generateCacheKey($documentId);
+        $cacheKey = $this->generateCacheKey($documentId, 'text');
         if ($this->cache->has($cacheKey)) {
             $cacheData = $this->cache->get($cacheKey, '');
 
@@ -53,13 +54,45 @@ class DocsReader
         return $bodyText;
     }
 
-    public function generateCacheKey(string $documentId): string
+    /**
+     * Read contents of the document as HTML.
+     *
+     * To be able to read the doc as HTML, you must enable Google Drive API in your Google Cloud Console project:
+     * https://console.cloud.google.com/apis/library/drive.googleapis.com
+     */
+    public function readAsHtml(string $documentId, int $ttl = self::DEFAULT_TTL): string
     {
-        return 'doc_' . sha1($documentId);
+        $cacheKey = $this->generateCacheKey($documentId, 'html');
+        if ($this->cache->has($cacheKey)) {
+            $cacheData = $this->cache->get($cacheKey, '');
+
+            return is_string($cacheData) ? $cacheData : '';
+        }
+
+        $driveService = $this->createDriveService();
+
+        $response = $driveService->files->export($documentId, 'text/html', [
+            'alt' => 'media',
+        ]);
+        $htmlContent = $response->getBody()->getContents();
+
+        $this->cache->set($cacheKey, $htmlContent, $ttl);
+
+        return $htmlContent;
+    }
+
+    private function generateCacheKey(string $documentId, string $type): string
+    {
+        return 'doc_' . sha1($documentId) . '_' . $type;
     }
 
     private function createDocsService(): Docs
     {
         return new Docs($this->googleClient);
+    }
+
+    private function createDriveService(): Drive
+    {
+        return new Drive($this->googleClient);
     }
 }

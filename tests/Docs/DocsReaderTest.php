@@ -8,6 +8,7 @@ use Google\Service\Docs;
 use Google\Service\Sheets;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class DocsReaderTest extends TestCase
 {
@@ -23,6 +24,7 @@ class DocsReaderTest extends TestCase
         $this->googleClient = new Client();
         $this->googleClient->setAuthConfig(__DIR__ . '/../google_client.json');
         $this->googleClient->addScope(Docs::DOCUMENTS_READONLY);
+        $this->googleClient->addScope(Docs::DRIVE_READONLY);
 
         parent::setUp();
     }
@@ -42,5 +44,23 @@ class DocsReaderTest extends TestCase
             List item 2
 
             HTXT, $data);
+    }
+
+    #[Test]
+    public function shouldReadDocumentAsHtml(): void
+    {
+        $reader = new DocsReader($this->googleClient, $this->cache);
+
+        $html = $reader->readAsHtml(self::DOCUMENT_ID);
+
+        $crawler = new Crawler($html);
+        $h1 = $crawler->filter('h1');
+        $this->assertCount(1, $h1);
+        $this->assertEquals('Header 1', $h1->text());
+
+        $li = $crawler->filter('li');
+        $this->assertCount(2, $li);
+        $this->assertEquals('List item 1', $li->eq(0)->text());
+        $this->assertEquals('List item 2', $li->eq(1)->text());
     }
 }

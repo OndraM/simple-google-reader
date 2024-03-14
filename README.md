@@ -20,7 +20,10 @@ $ composer require ondram/simple-google-reader
 
 1. [Obtain service account credentials](https://github.com/googleapis/google-api-php-client#authentication-with-service-accounts) for your project
 1. In service account details in IAM admin console open Keys settings and add JSON keys. Download generated JSON file with credentials (save for example as `google_client.json`).
-1. Enable [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) and/or [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com) in Google Cloud Console for your project
+1. Enable required APIs in [Google Cloud Console](https://console.cloud.google.com/apis/dashboard) for your project:
+   - [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) if you plan reading Spreadsheets,
+   - [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com) to read Docs,
+   - [Google Drive API](https://console.cloud.google.com/apis/library/drive.googleapis.com) if you need to read Docs as HTML,
 1. Share the intended document with your service account, copy document ID (from the URL)
 1. Make sure to install any package [implementing PSR-6 caching](https://packagist.org/providers/psr/simple-cache-implementation)
 1. Prepare cache and initialize Google Client:
@@ -49,6 +52,8 @@ $client->setSubject('foo@bar.cz');
 ```
 
 ### Reading spreadsheets
+
+In Google Cloud Console, do not forget to enable [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com).
 
 ```php
 // $client is the instance from above example
@@ -88,21 +93,36 @@ Empty rows are skipped. There is currently (intentional) limitation to read colu
 
 ### Reading documents
 
+#### As plaintext
+
+In Google Cloud Console, do not forget to enable [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com).
+
 ```php
 // $client is the instance from above example
 
 $client->addScope(\Google\Service\Docs::DOCUMENTS_READONLY);
 
-$reader = new DocsReader($client, $cache);
-$document = $reader->readAsPlaintext('pasteHereGoogleSpreadsheedId'/*, optional cache TTL*/);
+$docsReader = new DocsReader($client, $cache);
+
+$document = $docsReader->readAsPlaintext('pasteHereGoogleDocsId'/*, optional cache TTL*/);
 ```
 
 This will read the whole document as plain text. Only text elements are included, other elements like tables are
 ignored. Also, any document formatting is ignored.
 
+#### As HTML
+
+To read document as HTML, do not forget to enable [Google Drive API](https://console.cloud.google.com/apis/library/drive.googleapis.com) in Google Cloud console.
+
+```php
+$client->addScope(\Google\Service\Docs::DRIVE_READONLY);
+
+$html = $docsReader->readAsHtml('pasteHereGoogleDocsId'/*, optional cache TTL*/);
+```
+
 ## Testing
 
-Tests in this library are mainly integration, meaning they require real Google Sheets API access.
+Tests in this library are mainly integration, meaning they require real Google API access.
 To run them, you must download and store JSON credentials for you service account to `tests/google_client.json` file.
 
 The tests then use [this table](https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit)
