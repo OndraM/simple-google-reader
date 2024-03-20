@@ -24,11 +24,12 @@ $ composer require ondram/simple-google-reader
 
 1. [Obtain service account credentials](https://github.com/googleapis/google-api-php-client#authentication-with-service-accounts) for your project
 1. In service account details in IAM admin console open Keys settings and add JSON keys. Download generated JSON file with credentials (save for example as `google_client.json`).
+1. Optional: You can setup domain-wide delegation access for the service account. This is done in Google Workspace Admin. In that case the service account can impersonate any domain user.
 1. Enable required APIs in [Google Cloud Console](https://console.cloud.google.com/apis/dashboard) for your project:
-   - [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) if you plan reading Spreadsheets,
-   - [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com) to read Docs,
-   - [Google Drive API](https://console.cloud.google.com/apis/library/drive.googleapis.com) if you need to read Docs as HTML,
-1. Share the intended document with your service account, copy document ID (from the URL)
+   - [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com) if you plan reading Spreadsheets
+   - [Google Docs API](https://console.cloud.google.com/apis/library/docs.googleapis.com) to read Docs
+   - [Google Drive API](https://console.cloud.google.com/apis/library/drive.googleapis.com) if you need to read Docs as HTML
+1. Share the intended document with your service account (or if you use domain-wide delegation, then with some user account), copy document ID (from the URL)
 1. Make sure to install any package [implementing PSR-6 caching](https://packagist.org/providers/psr/simple-cache-implementation)
 1. Prepare cache and initialize Google Client:
 
@@ -49,8 +50,8 @@ $cache = new FilesystemCachePool(new Filesystem(new Local(__DIR__ . '/data')));
 // Instantiate the Google Client with your credentials
 $client = new \Google\Client();
 $client->setAuthConfig(__DIR__ . '/data/google_client.json');
-// If you service account has domain-wide access, you need to use setSubject to set the name of the user
-// which will the service account impersonate. This user must have right to access the spreadsheet.
+// If you service account has domain-wide delegation access, you need to use setSubject to set the name of the user
+// which will the service account impersonate. This user also must have right to access the spreadsheet.
 $client->setSubject('foo@bar.cz');
 
 // see below for spreadsheets and docs usage
