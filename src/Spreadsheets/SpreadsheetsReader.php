@@ -18,7 +18,7 @@ class SpreadsheetsReader
     /**
      * @return array<string, mixed>
      */
-    public function readById(string $spreadsheetId, string $sheetName = null, int $ttl = self::DEFAULT_TTL): array
+    public function readById(string $spreadsheetId, ?string $sheetName = null, int $ttl = self::DEFAULT_TTL): array
     {
         $cacheKey = $this->generateCacheKey($spreadsheetId, $sheetName);
         if ($this->cache->has($cacheKey)) {
@@ -62,7 +62,7 @@ class SpreadsheetsReader
         return $data;
     }
 
-    private function generateCacheKey(string $spreadsheetId, string $sheetName = null): string
+    private function generateCacheKey(string $spreadsheetId, ?string $sheetName = null): string
     {
         return 'spreadsheet_'
             . sha1(
