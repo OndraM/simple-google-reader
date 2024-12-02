@@ -22,6 +22,7 @@ class SpreadsheetsReader
     {
         $cacheKey = $this->generateCacheKey($spreadsheetId, $sheetName);
         if ($this->cache->has($cacheKey)) {
+            /** @var array<string, mixed> */
             return (array) $this->cache->get($cacheKey, []);
         }
 
