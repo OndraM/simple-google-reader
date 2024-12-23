@@ -52,7 +52,15 @@
         },
         "sort-packages": true
     },
+    "extra": {
+        "google/apiclient-services": [
+            "Docs",
+            "Drive",
+            "Sheets"
+        ]
+    },
     "scripts": {
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
         "all": [
             "@lint",
             "@analyze",
