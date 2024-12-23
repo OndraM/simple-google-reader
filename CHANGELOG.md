@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 1.0.1 - 2024-12-23
+- Fix PHP 8.4 deprecation notices.
+- Fix incorrect phpDoc typehint for `SpreadsheetsReader::readById()`.
+
 ## 1.0.0 - 2024-03-14
 - **[BC break]** Rename `Reader` to `SpreadsheetsReader`.
 - Feat: Add Google Docs Reader, with ability to read documents either as plaintext or as HTML.
