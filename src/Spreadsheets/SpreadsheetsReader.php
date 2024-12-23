@@ -16,13 +16,13 @@ class SpreadsheetsReader
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<int, array<string, mixed>>
      */
     public function readById(string $spreadsheetId, ?string $sheetName = null, int $ttl = self::DEFAULT_TTL): array
     {
         $cacheKey = $this->generateCacheKey($spreadsheetId, $sheetName);
         if ($this->cache->has($cacheKey)) {
-            /** @var array<string, mixed> */
+            /** @var array<int, array<string, mixed>> */
             return (array) $this->cache->get($cacheKey, []);
         }
 
@@ -32,8 +32,12 @@ class SpreadsheetsReader
             $range = $sheetName . '!' . $range;
         }
 
-        $response = $sheetService->spreadsheets_values->get($spreadsheetId, $range);
+        /** @var Sheets\Resource\SpreadsheetsValues $spreadsheetValues */
+        $spreadsheetValues = $sheetService->spreadsheets_values;
+        $response = $spreadsheetValues->get($spreadsheetId, $range);
+        /** @var array<int, array<int, string>> $rows */
         $rows = $response->getValues();
+        // @phpstan-ignore function.alreadyNarrowedType
         if (!is_array($rows) || count($rows) === 0) {
             return [];
         }
