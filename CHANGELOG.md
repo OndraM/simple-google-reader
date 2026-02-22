@@ -3,7 +3,10 @@
 <!-- There is always Unreleased section on the top. Subsections (Added, Changed, Fixed, Removed) should be added as needed. -->
 
 ## Unreleased
+
+## 1.0.3 - 2026-02-22
 - Chore: Drop PHP 8.1 support; require PHP ^8.2.
+- Test: Upgrade to PHPUnit 11.
 
 ## 1.0.2 - 2026-02-22
 - Chore: Allow psr/simple-cache ^2 and ^3.
