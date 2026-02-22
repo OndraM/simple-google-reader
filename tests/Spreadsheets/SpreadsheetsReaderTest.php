@@ -8,9 +8,11 @@ use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cocur\Slugify\Slugify;
 use Google\Client;
 use Google\Service\Sheets;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(SpreadsheetsReader::class)]
 class SpreadsheetsReaderTest extends TestCase
 {
     // @see https://docs.google.com/spreadsheets/d/1cEgUJA35YE56jn3JQRrJMfXKK9rkw0qaWEiYWnADLa8/edit
