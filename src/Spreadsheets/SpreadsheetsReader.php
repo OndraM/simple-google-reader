@@ -47,9 +47,7 @@ readonly class SpreadsheetsReader
 
         // Map rows to associative arrays based on header
         $data = array_map(
-            function ($value) use ($header) {
-                return array_combine($header, array_pad($value, count($header), null));
-            },
+            fn($value) => array_combine($header, array_pad($value, count($header), null)),
             $rows,
         );
 
