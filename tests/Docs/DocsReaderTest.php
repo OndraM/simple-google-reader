@@ -1,11 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
+// @php-cs-fixer-ignore no_trailing_whitespace_in_string
 
 namespace OndraM\SimpleGoogleReader\Docs;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Google\Client;
 use Google\Service\Docs;
-use Google\Service\Sheets;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;

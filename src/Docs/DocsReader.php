@@ -11,9 +11,7 @@ readonly class DocsReader
 {
     private const DEFAULT_TTL = 3600;
 
-    public function __construct(private Client $googleClient, private CacheInterface $cache)
-    {
-    }
+    public function __construct(private Client $googleClient, private CacheInterface $cache) {}
 
     /**
      * Read contents of the document as plaintext. Only text elements and read, other elements like tables are ignored.
