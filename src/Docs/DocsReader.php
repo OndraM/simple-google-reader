@@ -7,11 +7,11 @@ use Google\Service\Docs;
 use Google\Service\Drive;
 use Psr\SimpleCache\CacheInterface;
 
-class DocsReader
+readonly class DocsReader
 {
     private const DEFAULT_TTL = 3600;
 
-    public function __construct(private readonly Client $googleClient, private readonly CacheInterface $cache)
+    public function __construct(private Client $googleClient, private CacheInterface $cache)
     {
     }
 
