@@ -4,9 +4,12 @@
 
 ## Unreleased
 
+## 1.0.2 - 2026-02-22
+- Chore: Allow psr/simple-cache ^2 and ^3.
+
 ## 1.0.1 - 2024-12-23
-- Fix PHP 8.4 deprecation notices.
-- Fix incorrect phpDoc typehint for `SpreadsheetsReader::readById()`.
+- Fix: PHP 8.4 deprecation notices.
+- Fix: Incorrect phpDoc typehint for `SpreadsheetsReader::readById()`.
 
 ## 1.0.0 - 2024-03-14
 - **[BC break]** Rename `Reader` to `SpreadsheetsReader`.
