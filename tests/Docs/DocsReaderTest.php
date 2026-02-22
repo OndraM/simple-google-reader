@@ -9,10 +9,12 @@ namespace OndraM\SimpleGoogleReader\Docs;
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Google\Client;
 use Google\Service\Docs;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
+#[CoversClass(DocsReader::class)]
 class DocsReaderTest extends TestCase
 {
     // @see https://docs.google.com/document/d/1T46U8sJEimVDhtmixxKLtf7Oxl1FzM2ae2EDYQ-HT_4/edit
