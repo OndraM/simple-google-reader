@@ -1,5 +1,6 @@
 composer.lock
 vendor
+.php-cs-fixer.cache
 .phpunit.result.cache
 tests/google_client.json
 clover.xml

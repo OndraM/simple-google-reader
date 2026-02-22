@@ -29,6 +29,7 @@
         "cache/array-adapter": "^1.2",
         "cache/filesystem-adapter": "^1.1",
         "ergebnis/composer-normalize": "^2.20",
+        "friendsofphp/php-cs-fixer": "^3.94",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^10.5",
@@ -67,10 +68,12 @@
             "@test"
         ],
         "analyze": [
-            "vendor/bin/phpstan analyze -c phpstan.neon --ansi"
+            "vendor/bin/phpstan analyze -c phpstan.neon --ansi",
+            "vendor/bin/php-cs-fixer fix --dry-run --diff --ansi"
         ],
         "fix": [
-            "@composer normalize"
+            "@composer normalize",
+            "vendor/bin/php-cs-fixer fix --diff --ansi"
         ],
         "lint": [
             "vendor/bin/parallel-lint -j 10 -e php ./src ./tests",

@@ -11,9 +11,7 @@ readonly class SpreadsheetsReader
 {
     private const DEFAULT_TTL = 3600;
 
-    public function __construct(protected Client $googleClient, private Slugify $slugify, private CacheInterface $cache)
-    {
-    }
+    public function __construct(protected Client $googleClient, private Slugify $slugify, private CacheInterface $cache) {}
 
     /**
      * @return array<int, array<string, mixed>>
@@ -43,8 +41,8 @@ readonly class SpreadsheetsReader
         }
 
         $header = array_map(
-            fn ($value) => $this->slugify->slugify($value, ['separator' => '_']),
-            array_shift($rows)
+            fn($value) => $this->slugify->slugify($value, ['separator' => '_']),
+            array_shift($rows),
         );
 
         // Map rows to associative arrays based on header
@@ -52,13 +50,13 @@ readonly class SpreadsheetsReader
             function ($value) use ($header) {
                 return array_combine($header, array_pad($value, count($header), null));
             },
-            $rows
+            $rows,
         );
 
         // Filter out rows where all values are null
         $data = array_filter(
             $data,
-            fn($row) => count(array_filter($row, fn($value) => $value !== null)) > 0
+            fn($row) => count(array_filter($row, fn($value) => $value !== null)) > 0,
         );
 
         $this->cache->set($cacheKey, $data, $ttl);
@@ -71,7 +69,7 @@ readonly class SpreadsheetsReader
         return 'spreadsheet_'
             . sha1(
                 $spreadsheetId
-                . ($sheetName !== null ? '_' . $sheetName : '')
+                . ($sheetName !== null ? '_' . $sheetName : ''),
             );
     }
 
